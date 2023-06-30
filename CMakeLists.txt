@@ -27,8 +27,13 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
-add_executable( Bound
-	src/main.cpp
+add_subdirectory(libs)
+
+add_executable( Bound )
+target_link_libraries(Bound SDL3-shared)
+target_sources(Bound
+	PRIVATE src/app.cpp
+	PRIVATE src/main.cpp
 )
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
