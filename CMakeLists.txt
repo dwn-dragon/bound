@@ -33,6 +33,7 @@ add_executable( Bound )
 target_link_libraries(Bound SDL3-shared)
 target_sources(Bound
 	PRIVATE src/app.cpp
+	PRIVATE src/linm.cpp
 	PRIVATE src/main.cpp
 )
 
