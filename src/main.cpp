@@ -52,7 +52,7 @@ vec2	speed = { 0, 0 }, accel = { 0, 0 };
 
 //	lateral movement
 bool left = 0, right = 0;
-float ACCEL = 2500, DECEL = 2500;
+float ACCEL = 2500, DECEL = 3000;
 float MAX_MOV_SPEED = 500;
 
 //	falling
@@ -110,41 +110,28 @@ int main(int argc, char const *argv[]) {
 void update(float dt) {
 	//	speed variance
 	//	x
-	accel.x = 0;
-	vec2 t_acc = { 0, 0 }, t_uni = { 0, 0 };
-
 	if (right || left) {
-		if (right)
-			accel.x += SGN_RIGHT ACCEL;
-		if (left)
-			accel.x += SGN_LEFT ACCEL;
-		
-		if (accel.x == 0)
-			t_uni.x = dt;
-		else {
-			int sgn = (accel.x < 0) ? -1 : 1;
-			auto t_need = (sgn * MAX_MOV_SPEED - speed.x) / accel.x;
-
-			if (t_need > dt)
-				t_acc.x = dt;
-			else if (t_need < 0)
-				t_uni.x = dt;
-			else {
-				t_acc.x = t_need;
-				t_uni.x = dt - t_need;
-			}
+		if (right) {
+			//	
+			speed.x += SGN_RIGHT ACCEL * dt;
+			if (speed.x > MAX_MOV_SPEED)
+				speed.x = MAX_MOV_SPEED;
+		}
+		if (left) {
+			speed.x += SGN_LEFT ACCEL * dt;
+			if (speed.x < -MAX_MOV_SPEED)
+				speed.x = -MAX_MOV_SPEED;
 		}
 	}
-	else {
-		int sgn = (speed.x < 0) ? -1 : 1;
-		accel.x = -sgn * DECEL;
+	else if (speed.x != 0) {
+		float vlen = (speed.x < 0) ? -speed.x : speed.x;
+		speed.x /= vlen;
 
-		auto dvel = accel.x * dt;
-		auto ratio = -1 * speed.x / dvel;
-		if (ratio > 1)
-			ratio = 1;
-		
-		t_acc.x = ratio * dt;
+		vlen -= DECEL * dt;
+		if (vlen < 0)
+			vlen = 0;
+
+		speed.x *= vlen;
 	}
 
 	//	y
@@ -155,38 +142,15 @@ void update(float dt) {
 		}
 	}
 
-	if (accel.y == 0)
-		t_uni.y = dt;
-	else {
-		int sgn = (accel.y < 0) ? -1 : 1;
-		auto t_need = (sgn * MAX_FALL_SPEED - speed.y) / accel.y;
-
-		if (t_need > dt)
-			t_acc.y = dt;
-		else if (t_need < 0)
-			t_uni.y = dt;
-		else {
-			t_acc.y = t_need;
-			t_uni.y = dt - t_need;
-		}
+	{
+		speed.y += accel.y * dt;
+		if (speed.y > MAX_FALL_SPEED)
+			speed.x = MAX_FALL_SPEED;
 	}
 
 	//	motions
-	if (t_acc.x != 0) {
-		player.pos.x += 0.5f * accel.x * t_acc.x * t_acc.x + speed.x * t_acc.x;
-		speed.x += accel.x * t_acc.x;
-	}
-	if (t_acc.y != 0) {
-		player.pos.y += 0.5f * accel.y * t_acc.y * t_acc.y + speed.y * t_acc.y;
-		speed.y += accel.y * t_acc.y;
-	}
-
-	if (t_uni.x != 0) {
-		player.pos.x += speed.x * t_uni.x;
-	}
-	if (t_uni.y != 0) {
-		player.pos.y += speed.y * t_uni.y;
-	}
+	player.pos.x += speed.x * dt;
+	player.pos.y += speed.y * dt;
 
 	//	collision with platform
 	if (player.pos.y + player.dim.h >= platform.pos.y) {
