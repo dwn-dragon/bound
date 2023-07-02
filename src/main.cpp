@@ -95,6 +95,9 @@ void mouseUp(SDL_MouseButtonEvent& event) {
 void mouseDown(SDL_MouseButtonEvent& event) {
 }
 
+void close() {
+	run = false;
+}
 void events() {
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) switch (event.type)
@@ -103,6 +106,15 @@ void events() {
 		close();
 		break;
 
+	case SDL_EVENT_MOUSE_MOTION:
+		mouseMov(event.motion);
+		break;
+	case SDL_EVENT_MOUSE_BUTTON_UP:
+		mouseUp(event.button);
+		break;
+	case SDL_EVENT_MOUSE_BUTTON_DOWN:
+		mouseDown(event.button);
+
 	case SDL_EVENT_KEY_UP:
 		keyUp(event.key);
 		break;
@@ -110,7 +122,4 @@ void events() {
 		keyDown(event.key);
 		break;
 	}
-}
-void close() {
-	run = false;
 }
