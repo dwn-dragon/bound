@@ -11,8 +11,8 @@ public:
 	vec2() noexcept;
 	vec2(float a, float b) noexcept;
 
-	float& operator[](size_t len) noexcept;
-	const float& operator[](size_t len) const noexcept;
+	float& operator[](size_t len);
+	const float& operator[](size_t len) const;
 
 	vec2 operator+() const noexcept;
 	vec2 operator-() const noexcept;
@@ -44,22 +44,22 @@ public:
 	};
 };
 
-using Pos = vec2;
-using Dim = vec2;
-
-union Entity
+class mat2
 {
-	SDL_FRect rect;
-	struct {
-		Pos pos;
-		Dim dim;
-	};
+public:
+	~mat2() noexcept = default;
+	
+	mat2() noexcept = default;
+	mat2(const vec2 v1, const vec2 v2) noexcept;
+
+	vec2& operator[](size_t cols);
+	const vec2& operator[](size_t cols) const;
+
+	vec2 operator*(const vec2 right) const noexcept;
+	mat2 operator*(const mat2 right) const noexcept;
+
+private:
+	vec2 _cols[2];
 };
 
-template< class Fn >
-inline vec2 apply_vec(Fn&& fn, const vec2& vec) {
-	return vec2{
-		fn( vec[0] ),
-		fn( vec[1] )
-	};
-}
+#include "linm.hpp"
