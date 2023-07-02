@@ -17,6 +17,13 @@ bool Map::collide(Entity target) {
 	return false;
 }
 
+Entity* Map::begin() noexcept {
+	return _arr.get();
+}
+Entity* Map::end() noexcept {
+	return begin() + _len;
+}
+
 bool collision(Entity block, Entity target) {
 	bool rx = 
 		target.pos.x <= block.pos.x + block.dim.x &&

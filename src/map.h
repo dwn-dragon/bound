@@ -17,6 +17,9 @@ public:
 
 	bool collide(Entity target);
 
+	Entity* begin() noexcept;
+	Entity* end() noexcept;
+
 private:
 	size_t _len;
 	std::unique_ptr<Entity[]> _arr;
