@@ -1,4 +1,5 @@
 #include "game.h"
+#include <iostream>
 
 Pos camPos	= { 0, 0 };
 Dim tileDim	= { 8, 8 };
@@ -31,5 +32,8 @@ void renderFillRect(const Entity& rect) {
 	tmp.pos = rect.pos * tileDim + camPos;
 	tmp.dim = rect.dim * tileDim;
 
-	SDL_RenderFillRect(App.renderer, (SDL_FRect*) &tmp);
+	auto res = SDL_RenderFillRect(App.renderer, (SDL_FRect*) &tmp);
+	if (res == -1) {
+		std::cerr << "Render error: " << SDL_GetError() << std::endl;
+	}
 }
