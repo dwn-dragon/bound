@@ -36,6 +36,7 @@ target_sources(Bound
 	PRIVATE src/linm.cpp
 	PRIVATE src/game.cpp
 	PRIVATE src/map.cpp
+	PRIVATE src/input.cpp
 	PRIVATE src/main.cpp
 )
 
