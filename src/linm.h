@@ -38,7 +38,7 @@ public:
 			};
 			struct
 			{
-				float h, w;
+				float w, h;
 			};
 		};
 	};
