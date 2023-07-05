@@ -18,15 +18,35 @@ struct Entity
 
 	union
 	{
-		mat2 mat;
 		struct 
 		{
 			Pos pos;
 			Dim dim;
 		};
 
+		mat2 mat;
+		float _raw[4];
+		
 		SDL_FRect rect;
 	};
+};
+
+struct MixedData
+{
+	float limit, accel, decel;
+	float gravity, vjump;
+};
+struct DampedData
+{
+	vec2 k;
+	float accel, grav;
+	float vjump;
+};
+
+struct Data
+{
+	MixedData mixed;
+	DampedData damped;
 };
 
 void clear();
