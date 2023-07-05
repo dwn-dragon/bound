@@ -62,4 +62,7 @@ private:
 	vec2 _cols[2];
 };
 
+template< class Fn >
+vec2 apply_vec(Fn&& fn, const vec2& vec);
+
 #include "linm.hpp"
