@@ -40,6 +40,12 @@ target_sources(Bound
 	PRIVATE src/main.cpp
 )
 
+add_custom_command(
+	TARGET Bound POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_directory
+	${CMAKE_SOURCE_DIR}/res/ $<TARGET_FILE_DIR:Bound>
+)
+
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
