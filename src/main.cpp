@@ -470,20 +470,18 @@ void mouseDown(SDL_MouseButtonEvent& event) {
 	else {
 		//	weapon not thrown yet
 		float v = 0;
-		vec2 dir = { event.x, event.y };
-
 		switch (event.button)
 		{
 		case SDL_BUTTON_LEFT:
 			if (!mleft) {
 				mleft = true;
-				v = 10;
+				v = 100;
 			}
 			break;
 		case SDL_BUTTON_RIGHT:
 			if (!mright) {
 				mright = true;
-				v = 20;
+				v = 200;
 			}
 			break; 
 		
@@ -491,7 +489,13 @@ void mouseDown(SDL_MouseButtonEvent& event) {
 			return;
 		}
 
-		throw_wpn(v, (dir / tileDim) - player.pos);
+		vec2 dir{ event.x, event.y };
+		dir = dir / tileDim;
+		dir = dir - player.pos;
+		auto len = sqrtf(dir.x * dir.x + dir.y * dir.y);
+		dir = dir / len;
+
+		throw_wpn(v, dir);
 		rWpn = true;
 	}
 }
