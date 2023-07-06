@@ -36,17 +36,10 @@ struct MixedData
 	float limit, accel, decel;
 	float gravity, vjump;
 };
-struct DampedData
-{
-	vec2 k;
-	float accel, grav;
-	float vjump;
-};
 
 struct Data
 {
 	MixedData mixed;
-	DampedData damped;
 };
 
 void clear();
